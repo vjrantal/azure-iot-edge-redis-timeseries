@@ -185,6 +185,37 @@
                 "value": "http://edgeHub:9600/metrics,http://edgeAgent:9600/metrics,http://$REDIS_EXPORTER_HOST_NAME:9121/metrics,http://$REDIS_TIME_SERIES_EDGE_HOST_NAME:9121/metrics,"
               }
             }
+          },
+          "AzureLogAgentModule": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "microsoft/oms",
+              "createOptions": {
+                "NetworkingConfig": {
+                  "EndpointsConfig": {
+                    "host": {}
+                  }
+                },
+                "HostConfig": {
+                  "Binds": [
+                    "/var/run/docker.sock:/var/run/docker.sock",
+                    "/var/lib/docker/containers:/var/lib/docker/containers"
+                  ],
+                  "NetworkMode": "host"
+                }
+              }
+            },
+            "env": {
+              "WSID": {
+                "value": "$LOG_ANALYTICS_WORKSPACE_ID"
+              },
+              "KEY": {
+                "value": "$LOG_ANALYTICS_SHARED_KEY"
+              }
+            }
           }
         }
       }
